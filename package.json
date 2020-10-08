@@ -1,0 +1,13 @@
+{
+  "name": "slackt",
+  "version": "1.0.0",
+  "description": "Simple Slack clone with preact",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.17.1",
+    "helmet": "^4.1.1",
+    "serve-static": "^1.14.1",
+    "winston": "^3.3.3"
+  }
+}
