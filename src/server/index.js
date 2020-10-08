@@ -1,18 +1,20 @@
 const path = require('path');
 const express = require('express');
-const serveStatic = require('serve-static');
 const helmet = require('helmet');
 const logger = require('./lib/logger');
+const apiRouter = require('./routes/api');
+
+const STATIC_OPTIONS = {
+   maxAge: 31536000000 // One year
+};
 
 const app = express();
 
 app.use(logger.logRequest);
 app.use(helmet());
-app.use(serveStatic(path.resolve(__dirname, '../../pubic')));
+app.use(express.static(path.resolve(__dirname, '../../pubic'), STATIC_OPTIONS));
 
-app.use('/', (req, res) => {
-   res.json({message: 'Welcome to Slackt', code: 200});
-});
+app.use('/api/v1', apiRouter);
 
 app.use(logger.sendResponse);
 
