@@ -1,0 +1,50 @@
+.divider, .divider-vert {
+  display: block;
+  position: relative;
+
+  &[data-content]::after {
+    background: #fff;
+    color: #acb3c2;
+    content: attr(data-content);
+    display: inline-block;
+    font-size: .8rem;
+    padding: 0 .4rem;
+    transform: translateY(-.65rem);
+  }
+}
+
+.divider {
+  border-top: .10rem solid $gray-600;
+  border-radius: .75rem;
+  height: .25rem;
+  margin: .4rem 0;
+
+  &[data-content] {
+    margin: .8rem 0;
+  }
+}
+
+.divider-vert{
+  display: block;
+  padding: .8rem;
+
+  &::before {
+    border-left: .10rem solid $gray-600;
+    border-radius: .75rem;
+    bottom: .4rem;
+    content: "";
+    display: block;
+    left: 50%;
+    position: absolute;
+    top: .4rem;
+    transform: translateX(-50%);
+  }
+
+  &[data-content]::after {
+    left: 50%;
+    padding: .2rem 0;
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%,-50%);
+  }
+}

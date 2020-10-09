@@ -1,1 +1,26 @@
 @import '~bootstrap/scss/bootstrap.scss';
+
+.bg-gray {
+  background-color: $gray-300;
+}
+
+@import 'feather';
+
+$base: 15;
+.icon-x2 {
+  font-size: $base * 2px;
+}
+
+.icon-x3 {
+  font-size: $base * 3px;
+}
+
+@import 'divider';
+
+.auth-wrapper {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: $gray-300;
+}

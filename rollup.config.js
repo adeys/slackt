@@ -3,6 +3,7 @@ const {nodeResolve} =  require('@rollup/plugin-node-resolve');
 const commonjs = require('@rollup/plugin-commonjs');
 const buble = require('@rollup/plugin-buble');
 const postcss = require('rollup-plugin-postcss');
+const autoprefixer = require('autoprefixer');
 const replace = require('@rollup/plugin-replace');
 const alias = require('@rollup/plugin-alias');
 
@@ -33,6 +34,7 @@ module.exports = ['index'].map(name => ({
         nodeResolve(),
         postcss({
             use: ['sass'],
+            plugins: [autoprefixer],
             minimize: true,
             extract: true
         }),
