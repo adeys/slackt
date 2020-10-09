@@ -3,4 +3,6 @@ node_modules
 *.db
 *.db.*
 logs/*
+dist/*
+*/build/*
 yarn-error.log
