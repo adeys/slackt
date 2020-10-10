@@ -49,10 +49,14 @@ export default class RegisterForm extends Component {
                                id="su-password"
                                required={true}/>
                         <div className="invalid-feedback">{errors.password || 'Password cannot be empty'}</div>
-                        <div className="text-muted small mt-2 text-wrap">Passwords must contain at least height characters with at least one non empty</div>
+                        <div className="text-muted small mt-2 text-wrap">
+                            Passwords must contain at least height characters with at least one non-empty
+                        </div>
                     </div>
                     <div className="form-group text-center">
-                        <button className="btn btn-success mb-4" disabled={isSyncing} type="submit">Sign Up{isSyncing ? '...' : ''}</button>
+                        <button className="btn btn-success mb-4" disabled={isSyncing} type="submit">
+                            Sign Up{isSyncing ? '...' : ''}
+                        </button>
                     </div>
                 </Form>
             </div>

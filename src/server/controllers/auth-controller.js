@@ -1,7 +1,11 @@
 const Validator = require('validatorjs');
+const {nanoid} = require('nanoid');
+const jwt = require('jsonwebtoken');
 
 const validationHelper = require('../helpers/validator');
 const status = require('../helpers/http-statuses');
+const security = require('../lib/security');
+const jwtConfig = require('../settings').jwt;
 
 const db = require('../lib/database');
 
@@ -24,7 +28,8 @@ class AuthController {
 
         if (validation.fails()) {
             let errors = validationHelper.errors.firstOfAll(validation.errors.all());
-            res.status(status.HTTP_NOT_ACCEPTABLE).json({status: status.HTTP_NOT_ACCEPTABLE, errors});
+            res.status(status.HTTP_NOT_ACCEPTABLE)
+                .json({status: status.HTTP_NOT_ACCEPTABLE, errors});
             return;
         }
 
@@ -32,10 +37,20 @@ class AuthController {
 
         try {
             db.getCollection('users')
-                .insertOne({username, email, password, joinedAt: new Date()});
+                .insertOne({
+                    _id: nanoid(),
+                    username,
+                    email,
+                    password: security.hashPassword(password),
+                    joinedAt: new Date()
+                });
         } catch (e) {
             // Unique constraint fails
-            res.json({status: status.HTTP_NOT_ACCEPTABLE, errors: {username: 'This username is not available.'}});
+            res.status(status.HTTP_NOT_ACCEPTABLE)
+                .json({
+                    status: status.HTTP_NOT_ACCEPTABLE,
+                    errors: {username: 'This username is not available.'}
+                });
             return;
         }
 
@@ -43,7 +58,32 @@ class AuthController {
     }
 
     loginUser(req, res) {
+        let {username, password} = req.body;
 
+        let record = db.getCollection('users')
+            .findOne({username});
+
+        if (record === null || !security.verifyHash(record.password, password)) {
+            return this.sendForbiddenResponse(res);
+        }
+
+        let token = jwt.sign({jti: record._id, username}, jwtConfig.secret, jwtConfig.options);
+
+        res.json({
+            status: status.HTTP_OK,
+            token
+        });
+    }
+
+    sendForbiddenResponse(res) {
+        let code = status.HTTP_FORBIDDEN;
+        res.status(code).json({
+            status: code,
+            error: {
+                code,
+                message: 'Invalid credentials'
+            }
+        });
     }
 }
 

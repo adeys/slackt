@@ -6,6 +6,7 @@ const bodyParser = require('body-parser');
 
 const apiRouter = require('./routes/api');
 const renderIndex = require('./lib/renderer');
+const jwtAuth = require('./lib/jwt-auth');
 
 const STATIC_OPTIONS = {
    maxAge: 31536000000 // One year
@@ -23,7 +24,7 @@ app.use('/assets/fonts', express.static(path.resolve(__dirname, '../../public/fo
 app.use('/assets', express.static(path.resolve(__dirname, '../../public/build'), STATIC_OPTIONS));
 
 // Route handlers
-app.use('/api/v1', apiRouter);
+app.use('/api/v1', jwtAuth, apiRouter);
 app.use('*', renderIndex);
 
 app.listen(3000, () => console.log('Server running on port 3000'));

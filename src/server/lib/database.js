@@ -11,13 +11,13 @@ const db = new Loki(__dirname + '/../data/database.db', {
 });
 
 function initializeDatabase() {
-    const indices = {users: ['username'/*, 'email'*/], chats: ['name']};
+    const indices = {users: ['_id', 'username',/*, 'email'*/], chats: ['_id', 'name']};
     ['users', 'channels', 'chats'].forEach(coll => {
         if (db.getCollection(coll) === null) {
             db.addCollection(
                 coll,
                 indices[coll]
-                    ? {indices: [indices[coll][0]], unique: indices[coll]}
+                    ? {indices: indices[coll], unique: indices[coll]}
                     : {}
             );
         }
