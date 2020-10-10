@@ -1,3 +1,11 @@
-import App from './App';
+import {h} from 'preact';
+import {Provider} from 'unistore/preact';
 
-export default App;
+import App from './App';
+import store from './store';
+
+export default ({url}) => (
+    <Provider store={store}>
+        <App url={url} />
+    </Provider>
+);

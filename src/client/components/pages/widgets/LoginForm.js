@@ -1,6 +1,8 @@
 import {Component, h} from 'preact';
+
 import Form from '../../elements/Form';
 import request from '../../../utils/request';
+import emitter from "../../../utils/emitter";
 
 export default class LoginForm extends Component {
     constructor(props) {
@@ -70,6 +72,7 @@ export default class LoginForm extends Component {
                     return;
                 }
 
+                emitter.emit('login.success', {token: json.token});
                 this.setState({isSyncing: false, error: {}});
                 event.target.reset();
             });
