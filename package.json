@@ -5,6 +5,7 @@
   "main": "index.js",
   "license": "MIT",
   "dependencies": {
+    "body-parser": "^1.19.0",
     "bootstrap": "^4.5.2",
     "express": "^4.17.1",
     "helmet": "^4.1.1",
@@ -12,8 +13,10 @@
     "morgan": "^1.10.0",
     "preact": "^10.5.4",
     "preact-render-to-string": "^5.1.10",
+    "preact-router": "^3.2.1",
     "reactstrap": "^8.6.0",
     "unistore": "^3.5.2",
+    "validatorjs": "^3.20.0",
     "winston": "^3.3.3"
   },
   "devDependencies": {
@@ -37,6 +40,6 @@
     "build:server": "yarn run rollup -c rollup.server.config.js",
     "build": "yarn run build:server && yarn run build:client",
     "dev": "concurrently \"yarn:build:client -w\" \"yarn:build:server -w\" \"yarn:serve\"",
-    "serve": "yarn run nodemon dist/server.js"
+    "serve": "yarn run nodemon src/server/index.js"
   }
 }

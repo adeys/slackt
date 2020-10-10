@@ -4,4 +4,4 @@ import App from './App';
 
 import './scss/index.scss';
 
-hydrate(<App />, document.querySelector('#app'));
+hydrate(<App url={document.location.pathname} />, document.querySelector('#app'));

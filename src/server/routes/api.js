@@ -1,9 +1,10 @@
 const { Router } = require('express');
+const authController = require('../controllers/auth-controller');
 
 const router = Router();
 
-router.get('/index', ((req, res) => {
-    res.json({message: 'Welcome to Slackt', code: 200});
-}));
+// Register auth routes
+router.post('/auth/register', authController.registerUser);
+router.post('/auth/login', authController.loginUser);
 
 module.exports = router;

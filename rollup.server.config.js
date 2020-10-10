@@ -5,12 +5,12 @@ const alias = require('@rollup/plugin-alias');
 
 let buildDir = './dist';
 
-module.exports = ['index'].map(name => ({
-    input: `./src/server/${name}.js`,
+module.exports = ['server'].map(name => ({
+    input: `./src/client/${name}.js`,
     output: {
-        file: `${buildDir}/server.js`,
+        file: `${buildDir}/${name}.build.js`,
         format: 'cjs',
-        exports: 'auto'
+        exports: 'default'
     },
     plugins: [
         buble({

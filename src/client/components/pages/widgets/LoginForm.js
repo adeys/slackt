@@ -1,13 +1,14 @@
 import {h} from 'preact';
+import Form from '../../elements/Form';
 
-export default () => {
+export default ({className}) => {
   return (
-      <div className="mx-auto text-center py-4 align-self-center">
+      <div className={`mx-auto text-center py-4 align-self-center ${className || ''}`}>
           <div className="mb-4 d-none d-md-block">
               <i className="feather icon-x2 text-info icon-unlock"/>
           </div>
           <h2 className="text-center">Login</h2>
-          <form className="mt-4" action="#">
+          <Form className="mt-4">
               <div className="form-group form">
                 <input className="form-control" placeholder="Username" type="text" name="username" id="si-username" />
               </div>
@@ -18,7 +19,7 @@ export default () => {
                 <button className="btn btn-success mb-4" type="submit">Login</button>
                 <p className="mb-2 text-muted">Forgot password? <a href="#">Reset</a></p>
               </div>
-        </form>
+        </Form>
       </div>
   );
 };

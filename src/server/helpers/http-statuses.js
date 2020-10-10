@@ -1,0 +1,7 @@
+module.exports = {
+    HTTP_OK: 200,
+    HTTP_CREATED: 201,
+    HTTP_NO_CONTENT: 204,
+    HTTP_UNAUTHORIZED: 401,
+    HTTP_NOT_ACCEPTABLE: 406
+};
