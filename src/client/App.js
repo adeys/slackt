@@ -9,14 +9,14 @@ import store from './store';
 const isLoggedIn = () => store.getState().user.token !== null;
 
 const onRouteChange = (e) => {
-    if (e.url === '/login' && isLoggedIn()) {
-        route('/dashboard', true);
-        return;
-    }
-
-    if (e.url !== '/login' && !isLoggedIn()) {
-        route('/login', true);
-    }
+    // if (e.url === '/login' && isLoggedIn()) {
+    //     route('/dashboard', true);
+    //     return;
+    // }
+    //
+    // if (e.url !== '/login' && !isLoggedIn()) {
+    //     route('/login', true);
+    // }
 };
 
 const Redirect = ({path, to}) => {

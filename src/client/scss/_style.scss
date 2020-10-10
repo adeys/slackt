@@ -1,0 +1,42 @@
+.auth-wrapper {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: $gray-300;
+}
+
+.wrapper {
+  display: flex;
+  width: 100%;
+  height: 100vh;
+}
+
+.nav-action {
+  margin-left: auto;
+  cursor: pointer;
+}
+
+.sb-sidenav-menu-content {
+  padding: 0.10rem 1.5rem;
+
+  & .sb-sidenav-menu-item {
+    padding: 0.30rem 0.75rem;
+    display: flex;
+    flex-direction: row;
+    text-decoration: none;
+    font-weight: bold;
+    color: $gray-600;
+    font-size: 0.85rem;
+
+    & .badge {
+      line-height: unset;
+    }
+
+    &:hover, &.active {
+      background-color: $gray-800;
+      border-radius: 0.25rem;
+      color: $gray-500;
+    }
+  }
+}

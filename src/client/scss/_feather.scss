@@ -504,3 +504,13 @@ $fonts-dir: '/assets/fonts';
 .icon-star-on:before { content: "\e90b"; }
 
 .icon-heart-on:before { content: "\e90c"; }
+
+$base: 12.5;
+
+.icon-x2 {
+  font-size: $base * 2px;
+}
+
+.icon-x3 {
+  font-size: $base * 3px;
+}

@@ -1,0 +1,18 @@
+#layout-error {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+
+  & .content {
+    min-width: 0;
+    flex-grow: 1;
+  }
+
+  & .footer {
+    min-width: 0;
+  }
+}
+
+.img-error {
+    max-width: 20rem;
+}
