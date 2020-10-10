@@ -1,12 +1,14 @@
 import {h} from 'preact';
 
-export default () => {
+import Dropdown from '../../elements/Dropdown';
+
+export default ({onToggleNav}) => {
     return (
         <nav className="sb-topnav navbar navbar-expand navbar-dark bg-dark">
-            <a className="navbar-brand" href="#">Slackt</a>
-            <button className="btn btn-sm text-white" id="sidebarToggle">
+            <button className="btn btn-sm text-white mx-2" onClick={onToggleNav} id="sidebarToggle">
                 <i className="feather icon-x2 icon-menu"/>
             </button>
+            <a className="navbar-brand" href="/">Slackt</a>
             <form className="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0">
                 <div className="input-group">
                     <input className="form-control" type="text" placeholder="Search for..." aria-label="Search"
@@ -19,17 +21,17 @@ export default () => {
                 </div>
             </form>
             <ul className="navbar-nav ml-auto ml-md-0">
-                <li className="nav-item dropdown">
-                    <a className="nav-link dropdown-toggle" id="userDropdown" href="#" role="button"
-                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <i className="feather icon-user"/></a>
-                    <div className="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
-                        <a className="dropdown-item" href="#">Settings</a>
-                        <a className="dropdown-item" href="#">Activity Log</a>
-                        <div className="dropdown-divider"/>
-                        <a className="dropdown-item" href="#">Logout</a>
-                    </div>
-                </li>
+                <Dropdown className="nav-item">
+                    <Dropdown.Toggle id="drop" className="btn btn-link nav-link">
+                        <i className="feather icon-user" />
+                    </Dropdown.Toggle>
+                    <Dropdown.Menu tag="li">
+                        <Dropdown.Item href="#">Settings</Dropdown.Item>
+                        <Dropdown.Item href="#">Activity Log</Dropdown.Item>
+                        <Dropdown.Item divider={true} />
+                        <Dropdown.Item href="#">Logout</Dropdown.Item>
+                    </Dropdown.Menu>
+                </Dropdown>
             </ul>
         </nav>
     )

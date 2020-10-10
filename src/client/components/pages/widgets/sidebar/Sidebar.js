@@ -1,4 +1,5 @@
 import {h} from 'preact';
+import {Link} from 'preact-router/match';
 
 export default () => {
     return (
@@ -14,18 +15,10 @@ export default () => {
                             </div>
                         </div>
                         <div className="sb-sidenav-menu-content">
-                            <a href="#" className="sb-sidenav-menu-item">
+                            <Link activeClassName="active" href="/dashboard" className="sb-sidenav-menu-item">
                                 # React
                                 <div className="badge badge-success ml-auto text-center">2</div>
-                            </a>
-                            <a href="#" className="sb-sidenav-menu-item">
-                                # React
-                                <div className="badge badge-success ml-auto text-center">2</div>
-                            </a>
-                            <a href="#" className="sb-sidenav-menu-item active">
-                                # React
-                                <div className="badge badge-success ml-auto text-center">2</div>
-                            </a>
+                            </Link>
                         </div>
 
                     </div>

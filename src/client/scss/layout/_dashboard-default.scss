@@ -4,7 +4,7 @@
 #layout-sidenav {
   display: flex;
   // Wraps the .sb-sidenav element and sets the size
-  & .nav {
+  & .sb-nav {
     flex-basis: $sidenav-base-width;
     flex-shrink: 0;
     transition: transform 0.15s ease-in-out;
@@ -30,7 +30,7 @@
 // Default behavior for the static sidenav collapse
 .sb-sidenav-toggled {
   & #layout-sidenav {
-    & .nav {
+    & .sb-nav {
       transform: translateX(0);
     }
 
@@ -55,7 +55,7 @@
 // Responsive styling for the sidenav layout
 @include media-breakpoint-up(lg) {
   #layout-sidenav {
-    & .nav {
+    & .sb-nav {
       transform: translateX(0);
     }
 
@@ -66,8 +66,8 @@
   }
   // Behavior for the sidenav collapse on screens larger than the med breakpoint
   .sb-sidenav-toggled {
-    & #sidenav {
-      & .nav {
+    & #layout-sidenav {
+      & .sb-nav {
         transform: translateX(-$sidenav-base-width);
       }
       & .content {
