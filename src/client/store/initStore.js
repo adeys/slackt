@@ -1,10 +1,11 @@
 import devtools from "unistore/devtools";
 import rootStore from "./index";
 import emitter from "../utils/emitter";
+import getStorage from "../utils/storage";
 
 let store = process.env.NODE_ENV !== 'production' ? devtools(rootStore) : rootStore;
 
-let state = localStorage.getItem('slackt.state');
+let state = getStorage().getItem('slackt.state');
 
 if (state) {
     store.setState(JSON.parse(state));
