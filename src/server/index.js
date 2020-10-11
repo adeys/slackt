@@ -3,6 +3,7 @@ const express = require('express');
 const helmet = require('helmet');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
+const WebSocketServer = require('../shared/ws/server');
 
 const apiRouter = require('./routes/api');
 const renderIndex = require('./lib/renderer');
@@ -27,16 +28,16 @@ app.use('/assets', express.static(path.resolve(__dirname, '../../public/build'),
 app.use('/api/v1', jwtAuth, apiRouter);
 app.use('*', renderIndex);
 
+const server = app.listen(3000, () => console.log('Server running on port 3000'));
+
 // Configure socket connection
-const io = require('../shared/pocket-io/server')(app);
+const wss = new WebSocketServer(server);
 
-io.on('connection', (client) => {
-   console.log('A new client has joined');
-
-   client.on('new.message', data => {
-      client.broadcast.emit('new.message', data);
-      client.emit('message.sent');
+wss.on('connection', client => {
+   client.on('new.message', (msg) => {
+      console.log('Received : ', msg);
+      wss.broadcast('new.message', msg);
    });
 });
 
-app.listen(3000, () => console.log('Server running on port 3000'));
+wss.listen(() => console.log('Web Socket server started'));

@@ -15,14 +15,14 @@
     "mitt": "^2.1.0",
     "morgan": "^1.10.0",
     "nanoid": "^3.1.12",
-    "pocket.io": "^0.1.4",
     "preact": "^10.5.4",
     "preact-render-to-string": "^5.1.10",
     "preact-router": "^3.2.1",
     "reactstrap": "^8.6.0",
     "unistore": "^3.5.2",
     "validatorjs": "^3.20.0",
-    "winston": "^3.3.3"
+    "winston": "^3.3.3",
+    "ws": "^5.2.2"
   },
   "devDependencies": {
     "@rollup/plugin-alias": "^3.1.1",
