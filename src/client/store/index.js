@@ -4,7 +4,8 @@ let initialState = {
     auth: {
         isLoggedIn: false,
     },
-    user: {}
+    user: {},
+    messages: [],
 };
 
 const store = createStore(initialState);

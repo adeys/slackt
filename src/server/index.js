@@ -27,4 +27,16 @@ app.use('/assets', express.static(path.resolve(__dirname, '../../public/build'),
 app.use('/api/v1', jwtAuth, apiRouter);
 app.use('*', renderIndex);
 
+// Configure socket connection
+const io = require('../shared/pocket-io/server')(app);
+
+io.on('connection', (client) => {
+   console.log('A new client has joined');
+
+   client.on('new.message', data => {
+      client.broadcast.emit('new.message', data);
+      client.emit('message.sent');
+   });
+});
+
 app.listen(3000, () => console.log('Server running on port 3000'));

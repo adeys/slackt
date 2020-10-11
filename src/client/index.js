@@ -1,26 +1,20 @@
 import 'preact/devtools';
-import devtools from "unistore/devtools";
 import {h, hydrate} from 'preact';
 import {Provider} from 'unistore/preact';
 
 import AppRoot from './App';
-import rootStore from './store';
+import WebSocketProvider from './components/context/ws-context';
+import client from './ws'; // Ensure correct events listening trigger
+import store from './store/initStore';
 
 import './scss/index.scss';
-
-// Initialize store
-let store = process.env.NODE_ENV !== 'production' ? devtools(rootStore) : rootStore;
-
-let state = localStorage.getItem('slackt.state');
-
-if (state) {
-    store.setState(JSON.parse(state));
-}
 
 const App = ({url}) => {
     return (
         <Provider store={store}>
-            <AppRoot url={url} />
+            <WebSocketProvider client={client}>
+                <AppRoot url={url} />
+            </WebSocketProvider>
         </Provider>
     );
 };

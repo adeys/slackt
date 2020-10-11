@@ -1,38 +1,9 @@
 import {h} from 'preact';
-import {useEffect, useState} from "preact/hooks";
-import {connect} from 'unistore/preact';
+
+import {MessageList, ChatInput} from './chat';
 
 
-const Img = ({src, alt}) => {
-    let [isMounted, setMounted] = useState(false);
-
-    useEffect(() => setMounted(true), []);
-
-    return isMounted
-        ? <img src={src} alt={alt} />
-        : <div className="spinner-grow spinner-grow-sm text-secondary"/>;
-};
-
-const ChatItem = ({user}) => {
-    return (
-        <div className="chat-item">
-            <div className="avatar rounded-circle">
-                <Img src={user.avatar} alt={"@" + user.username} />
-            </div>
-            <div className="chat-message">
-                <div className="msg-author small">
-                    <span className="font-weight-bold mr-2">{user.username}</span>
-                    <span className="text-muted">3 minutes ago</span>
-                </div>
-                <div className="msg-content">
-                    {'Hello there '.repeat(25)}
-                </div>
-            </div>
-        </div>
-    );
-};
-
-const ChatPage = ({user}) => {
+export default () => {
     return (
         <div className="d-flex flex-column h-100">
             <div className="my-3 d-flex flex-column flex-sm-row h-100">
@@ -63,23 +34,11 @@ const ChatPage = ({user}) => {
                         </div>
                     </div>
                     {/* Messages List */}
-                    <div className="card-body chat-list">
-                        <div className="scrollbar h-100">
-                            {new Array(10).fill('name')
-                                .map((_, i) => <ChatItem key={i} id={i} user={user} />)}
-                        </div>
-                    </div>
+                    <MessageList />
 
                     {/* Message Input */}
                     <div className="mt-3 p-2 col-12 bg-light">
-                        <div className="input-group input-group-sm">
-                            <input type="text" className="form-control"/>
-                            <div className="input-group-append">
-                                <button className="btn btn-success">
-                                    <i className="feather icon-navigation" />
-                                </button>
-                            </div>
-                        </div>
+                        <ChatInput />
                     </div>
                 </div>
                 {/* Chat Details */}
@@ -114,5 +73,3 @@ const ChatPage = ({user}) => {
         </div>
     )
 };
-
-export default connect((state) => ({user: state.user}), {})(ChatPage);

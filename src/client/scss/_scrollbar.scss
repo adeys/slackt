@@ -1,5 +1,7 @@
 .scrollbar {
   overflow-y: scroll;
+  scroll-behavior: auto;
+  overflow-scrolling: auto;
 
   &::-webkit-scrollbar {
     width: 5px;

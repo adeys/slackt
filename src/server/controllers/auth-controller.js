@@ -78,7 +78,6 @@ class AuthController {
             status: status.HTTP_OK,
             user: {
                 username,
-                email: record.email,
                 token,
                 avatar: `${req.protocol}://${req.get('Host')}/assets/avatar/${record._id}.png`
             }
