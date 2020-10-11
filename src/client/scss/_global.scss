@@ -12,3 +12,13 @@ body {
   padding-left: $grid-gutter-width;
   padding-right: $grid-gutter-width;
 }
+
+.page-container {
+  flex: 1 1 auto;
+}
+
+.page-content {
+  display: flex;
+  flex-flow: column;
+  height: 100%;
+}

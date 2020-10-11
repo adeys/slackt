@@ -2,7 +2,7 @@ import { h } from 'preact';
 import Router, {route} from 'preact-router';
 
 import AuthPage from './components/pages/AuthPage';
-import DashboardPage from './components/pages/DashboardPage';
+import DashboardLayout from './components/layout/DashboardLayout';
 
 import store from './store';
 
@@ -29,7 +29,7 @@ const App = ({url}) => {
         <Router url={url} onChange={onRouteChange}>
             <Redirect path="/" to="/dashboard" />
             <AuthPage path="/login" />
-            <DashboardPage path="/dashboard" />
+            <DashboardLayout path="/dashboard" />
         </Router>
     );
 };
