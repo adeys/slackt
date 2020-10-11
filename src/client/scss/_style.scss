@@ -44,28 +44,25 @@
 .chat-list {
   background-color: $light;
   border: 1px solid $gray-400;
-  overflow-y: scroll;
-  overflow-style: auto;
+  border-radius: .35rem;
   flex-wrap: wrap;
   height: calc(100vh - 300px);
   margin-top: .75rem;
-  padding-top: .75rem;
-  padding-bottom: .75rem;
+  padding: .75rem;
 
   & .chat-item {
     display: flex;
     flex-direction: row;
-    margin: .75rem;
+    margin: .50rem;
 
     & .avatar {
-      height: 1rem;
-      width: 1rem;
-      margin-right: .75rem;
-      padding-top: .45rem;
+      height: 80px;
+      width: 80px;
+      margin-right: .25rem;
+      padding-top: .25rem;
     }
 
     & .chat-message {
-      margin-left: .50rem;
       padding: .05rem .5rem;
       height: auto;
 

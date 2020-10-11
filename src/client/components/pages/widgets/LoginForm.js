@@ -72,7 +72,7 @@ export default class LoginForm extends Component {
                     return;
                 }
 
-                emitter.emit('login.success', {token: json.token});
+                emitter.emit('login.success', {user: json.user});
                 this.setState({isSyncing: false, error: {}});
                 event.target.reset();
             });

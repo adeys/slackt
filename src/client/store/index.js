@@ -1,9 +1,12 @@
 import createStore from 'unistore';
 
 let initialState = {
-    user: {
-        token: null
-    }
+    auth: {
+        isLoggedIn: false,
+    },
+    user: {}
 };
 
-export default createStore(initialState);
+const store = createStore(initialState);
+
+export default store;

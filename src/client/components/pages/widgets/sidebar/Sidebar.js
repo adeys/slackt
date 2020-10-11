@@ -1,5 +1,6 @@
 import {h} from 'preact';
 import {Link} from 'preact-router/match';
+import store from "../../../../store";
 
 export default () => {
     return (
@@ -25,7 +26,7 @@ export default () => {
                 </div>
                 <div className="sb-sidenav-footer">
                     <div className="small">Logged in as:</div>
-                    Start Bootstrap
+                    {store.getState().user.username}
                 </div>
             </nav>
         </div>

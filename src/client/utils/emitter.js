@@ -4,8 +4,9 @@ import {route} from "preact-router";
 
 let emitter = mitt();
 
-emitter.on('login.success', ({token}) => {
-    store.setState({user: {token: token}});
+emitter.on('login.success', ({user}) => {
+    store.setState({user: user, auth: {isLoggedIn: true}});
+    localStorage.setItem('slackt.state', JSON.stringify(store.getState()));
     route('/dashboard');
 });
 

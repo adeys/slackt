@@ -1,6 +1,9 @@
+const path = require('path');
+const fs = require('fs');
 const Validator = require('validatorjs');
 const {nanoid} = require('nanoid');
 const jwt = require('jsonwebtoken');
+const jdenticon = require('jdenticon');
 
 const validationHelper = require('../helpers/validator');
 const status = require('../helpers/http-statuses');
@@ -35,8 +38,9 @@ class AuthController {
 
         let {username, email, password} = req.body;
 
+        let row;
         try {
-            db.getCollection('users')
+            row = db.getCollection('users')
                 .insertOne({
                     _id: nanoid(),
                     username,
@@ -55,6 +59,7 @@ class AuthController {
         }
 
         res.json({status: status.HTTP_CREATED, message: 'User successfully registered'});
+        this.generateAvatar(row);
     }
 
     loginUser(req, res) {
@@ -71,7 +76,12 @@ class AuthController {
 
         res.json({
             status: status.HTTP_OK,
-            token
+            user: {
+                username,
+                email: record.email,
+                token,
+                avatar: `${req.protocol}://${req.get('Host')}/assets/avatar/${record._id}.png`
+            }
         });
     }
 
@@ -84,6 +94,22 @@ class AuthController {
                 message: 'Invalid credentials'
             }
         });
+    }
+
+    generateAvatar(data) {
+        let dir = path.resolve(__dirname, `../../../public/build/avatar`);
+
+        if (!fs.existsSync(dir) || !fs.statSync(dir).isDirectory()) {
+            fs.mkdirSync(dir);
+        }
+
+        fs.writeFileSync(
+            `${dir}/${data._id}.png`,
+            jdenticon.toPng(
+                security.hashPassword(data.username  + '-' + data._id).hash,
+                100
+            ),
+        );
     }
 }
 

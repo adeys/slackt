@@ -1,14 +1,27 @@
 import {h} from 'preact';
+import {useEffect, useState} from "preact/hooks";
+import {connect} from 'unistore/preact';
 
-const ChatItem = () => {
+
+const Img = ({src, alt}) => {
+    let [isMounted, setMounted] = useState(false);
+
+    useEffect(() => setMounted(true), []);
+
+    return isMounted
+        ? <img src={src} alt={alt} />
+        : <div className="spinner-grow spinner-grow-sm text-secondary"/>;
+};
+
+const ChatItem = ({user}) => {
     return (
         <div className="chat-item">
             <div className="avatar rounded-circle">
-                <img src="#" alt="_alt"/>
+                <Img src={user.avatar} alt={"@" + user.username} />
             </div>
             <div className="chat-message">
                 <div className="msg-author small">
-                    <span className="font-weight-bold mr-2">adeys</span>
+                    <span className="font-weight-bold mr-2">{user.username}</span>
                     <span className="text-muted">3 minutes ago</span>
                 </div>
                 <div className="msg-content">
@@ -19,7 +32,7 @@ const ChatItem = () => {
     );
 };
 
-export default () => {
+const ChatPage = ({user}) => {
     return (
         <div className="d-flex flex-column h-100">
             <div className="my-3 d-flex flex-column flex-sm-row h-100">
@@ -51,7 +64,10 @@ export default () => {
                     </div>
                     {/* Messages List */}
                     <div className="card-body chat-list">
-                        {new Array(10).fill('name').map((i) => <ChatItem key={i} />)}
+                        <div className="scrollbar h-100">
+                            {new Array(10).fill('name')
+                                .map((_, i) => <ChatItem key={i} id={i} user={user} />)}
+                        </div>
                     </div>
 
                     {/* Message Input */}
@@ -98,3 +114,5 @@ export default () => {
         </div>
     )
 };
+
+export default connect((state) => ({user: state.user}), {})(ChatPage);
