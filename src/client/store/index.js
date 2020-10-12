@@ -1,11 +1,11 @@
 import createStore from 'unistore';
 
 let initialState = {
-    auth: {
-        isLoggedIn: false,
-    },
+    auth: { isLoggedIn: false },
     user: {},
-    messages: [],
+    currentRoom: 'default',
+    rooms: ['default'],
+    messages: {},
 };
 
 const store = createStore(initialState);

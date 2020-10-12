@@ -14,8 +14,6 @@ class ChatManager {
     bootstrap(server) {
         /** @param {Client} client */
         server.on('connection', client => {
-            this.rooms.default.addClient(client);
-
             client.on('room.subscribe', roomId => {
                 let room = this.rooms[roomId];
                 if (room) {

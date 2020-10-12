@@ -5,7 +5,7 @@ import getStorage from "../utils/storage";
 
 let store = process.env.NODE_ENV !== 'production' ? devtools(rootStore) : rootStore;
 
-let state = getStorage().getItem('slackt.state');
+let state = getStorage().getItem('slackt.user');
 
 if (state) {
     store.setState(JSON.parse(state));

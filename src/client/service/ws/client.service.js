@@ -24,11 +24,17 @@ export class WebSocketClient {
 
         this.socket.on('connect', (id) => {
             this.id = id;
-            this.user = store.getState().user;
+            let {user, rooms} = store.getState();
+            this.user = user;
+
+            // Subscribe to all client rooms
+            rooms.forEach(room => {
+                this.subscribe(room);
+            })
         });
 
-        this.socket.on('new.message', (payload) => {
-            addMessage(payload);
+        this.socket.on('new.message', ({room, data}) => {
+            addMessage({room, message: data});
         });
     }
 
@@ -44,7 +50,11 @@ export class WebSocketClient {
             .to(room)
             .emit('new.message', msg);
 
-        addMessage(msg);
+        addMessage({room, message: msg});
+    }
+
+    subscribe(room) {
+        this.socket.emit('room.subscribe', room);
     }
 
     _buildMessage(message) {

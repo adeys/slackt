@@ -17,7 +17,7 @@ const List = ({messages, user}) => {
     return (
         <div className="card-body chat-list">
             <div ref={ref} className="scrollbar h-100">
-                {messages.map((msg, idx) =>
+                {(messages || []).map((msg, idx) =>
                     <ChatMessage
                         key={idx}
                         author={msg.from}
@@ -30,4 +30,7 @@ const List = ({messages, user}) => {
     );
 };
 
-export default connect((state) => ({messages: state.messages, user: state.user.username}))(List);
+export default connect((state) => ({
+    messages: state.messages[state.currentRoom],
+    user: state.user.username})
+)(List);

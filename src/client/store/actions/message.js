@@ -1,6 +1,12 @@
 import store from '../index';
 
 export function addMessage(payload) {
-    let {messages} = store.getState();
-    store.setState({messages: [...messages, payload]});
+    let {room, message} = payload;
+    let messages = {...store.getState().messages};
+    if (!messages[room]) {
+        messages[room] = [];
+    }
+
+    messages[room] = [...messages[room], message];
+    store.setState({messages});
 }

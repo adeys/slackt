@@ -6,8 +6,9 @@ import getStorage from "./storage";
 let emitter = mitt();
 
 emitter.on('login.success', ({user}) => {
-    store.setState({user: user, auth: {isLoggedIn: true}});
-    getStorage().setItem('slackt.state', JSON.stringify(store.getState()));
+    let state = {user: user, auth: {isLoggedIn: true}};
+    store.setState(state);
+    getStorage().setItem('slackt.user', JSON.stringify(state));
 
     route('/dashboard');
     emitter.emit('trigger.ws.connect');

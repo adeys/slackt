@@ -34,7 +34,7 @@ class Room {
         // Broadcast to all provided clients
         clients.forEach(client => {
             if (client.isConnected()) {
-                client.emit(type, data);
+                client.emit(type, {room: this.name, data});
             }
         });
     }
