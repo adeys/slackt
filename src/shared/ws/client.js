@@ -1,5 +1,10 @@
 import mitt from "mitt";
 
+const EVENT_TYPE = {
+    EMIT: 'emit',
+    BROADCAST: 'broadcast'
+};
+
 class Client {
     /**
      * @property {boolean} connected
@@ -8,11 +13,14 @@ class Client {
      * @property {Emitter} emitter
      */
     constructor() {
-        this.connected = false;
         this.id = null;
+        this.connected = false;
         this.socket = null;
         this.queue = [];
         this.emitter = mitt();
+
+        this.type = EVENT_TYPE.EMIT;
+        this.targetRoom = null;
     }
 
     connect(url) {
@@ -62,9 +70,30 @@ class Client {
         return this;
     }
 
+    to(room) {
+        this.type = EVENT_TYPE.BROADCAST;
+        this.targetRoom = room;
+
+        return this;
+    }
+
     emit(type, data = null) {
-        let json = JSON.stringify({type, data});
+        let payload = this.type === EVENT_TYPE.BROADCAST
+            ? {
+                type: 'room.broadcast',
+                data: {
+                    room: this.targetRoom,
+                    event: {type, payload: data}
+                }
+            }
+            : {type, data};
+
+        let json = JSON.stringify(payload);
         this.connected ? this.socket.send(json) : this.queue.push(json);
+
+        // Reset
+        this.type = EVENT_TYPE.EMIT;
+        this.targetRoom = null;
 
         return this;
     }

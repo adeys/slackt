@@ -14,7 +14,7 @@ class ChatManager {
     bootstrap(server) {
         /** @param {Client} client */
         server.on('connection', client => {
-            // this.rooms.default.addClient(client);
+            this.rooms.default.addClient(client);
 
             client.on('room.subscribe', roomId => {
                 let room = this.rooms[roomId];
@@ -32,8 +32,8 @@ class ChatManager {
                 }
             });
 
-            client.on('new.message', msg => {
-                this.broadcastTo('default', client, 'new.message', msg);
+            client.on('room.broadcast', ({room, event}) => {
+                this.broadcastTo(room, client, event.type, event.payload);
             });
         });
 

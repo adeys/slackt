@@ -12,8 +12,7 @@ const onSubmit = (e, input, wsClient) => {
         return;
     }
 
-    wsClient.sendMessage(input);
-    console.log(input);
+    wsClient.sendTo('default', input);
 };
 
 export default () => {
