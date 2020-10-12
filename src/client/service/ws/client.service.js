@@ -1,5 +1,5 @@
 import emitter from '../../utils/emitter';
-import io from '../../../shared/pocket-io/client';
+import io from "../../../shared/ws/client";
 import store from "../../store";
 import {addMessage} from '../../store/actions/message';
 
@@ -17,7 +17,8 @@ export class WebSocketClient {
 
     connect() {
         if (!this.isConnected()) {
-            this.socket = io(this.baseUrl);
+            this.socket = io();
+            this.socket.connect(this.baseUrl);
         }
 
         this.socket.on('connect', () => this.user = store.getState().user);
