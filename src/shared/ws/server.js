@@ -15,7 +15,9 @@ class Room {
     }
 
     removeClient(client) {
-        this.clients.delete(client.id);
+        if (this.clients.has(client.id)) {
+            this.clients.delete(client.id);
+        }
     }
 
     broadcastFrom(client, type, data) {

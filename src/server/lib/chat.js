@@ -14,9 +14,25 @@ class ChatManager {
     bootstrap(server) {
         /** @param {Client} client */
         server.on('connection', client => {
-            this.rooms.default.addClient(client);
+            // this.rooms.default.addClient(client);
 
-            client.on('new.message', (msg) => {
+            client.on('room.subscribe', roomId => {
+                let room = this.rooms[roomId];
+                if (room) {
+                    room.addClient(client);
+                    client.emit('subscribed');
+                }
+            });
+
+            client.on('room.unsubscribe', roomId => {
+                let room = this.rooms[roomId];
+                if (room) {
+                    room.removeClient(client);
+                    client.emit('unsubscribed');
+                }
+            });
+
+            client.on('new.message', msg => {
                 this.broadcastTo('default', client, 'new.message', msg);
             });
         });
