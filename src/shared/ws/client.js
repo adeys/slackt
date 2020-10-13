@@ -29,23 +29,24 @@ class Client {
             parts.protocol.replace('http', 'ws'),
             '//',
             parts.host,
-        ].join(''));
+            '/ws'
+        ].join(''), ['json']);
 
         this.configureSocket();
         return this;
     }
 
     configureSocket() {
-        this.socket.onopen = event => {
+        this.socket.addEventListener('open', event => {
             this.emit('connect');
             this.connected = true;
 
             while (this.queue.length) {
                 this.socket.send(this.queue.shift());
             }
-        };
+        });
 
-        this.socket.onmessage = event => {
+        this.socket.addEventListener('message', event => {
             let info = JSON.parse(event.data);
             if (info.type === 'connect') {
                 this.id = info.data;
@@ -53,16 +54,16 @@ class Client {
             }
 
             this.emitter.emit(info.type, info.data || null);
-        };
+        });
 
-        this.socket.onerror = error => {
+        this.socket.addEventListener('error', error => {
             this.emitter.emit('error', error);
-        };
+        });
 
-        this.socket.onclose = event => {
+        this.socket.addEventListener('close', event => {
             this.socket = null;
             this.emitter.emit('close');
-        };
+        });
     }
 
     close() {
