@@ -12,10 +12,6 @@ const sendUnauthorizedResponse = (res) => {
 };
 
 module.exports = (req, res, next) => {
-    if (req.url.startsWith('/auth')) {
-        return next();
-    }
-
     if (!req.headers['Authorization']) {
         return sendUnauthorizedResponse(res);
     }
@@ -26,5 +22,5 @@ module.exports = (req, res, next) => {
         return next();
     }
 
-    return  sendUnauthorizedResponse(res);
+    return sendUnauthorizedResponse(res);
 };

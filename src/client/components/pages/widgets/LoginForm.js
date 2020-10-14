@@ -61,7 +61,7 @@ export default class LoginForm extends Component {
         this.setState({isSyncing: true});
         let data = new FormData(event.target);
 
-        request.post('/api/v1/auth/login', {
+        request.post('/auth/login', {
             username: data.get('username'),
             password: data.get('password'),
         })

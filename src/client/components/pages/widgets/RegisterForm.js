@@ -73,7 +73,7 @@ export default class RegisterForm extends Component {
         this.setState({isSyncing: true});
         let data = new FormData(event.target);
 
-        request.post('/api/v1/auth/register', {
+        request.post('/auth/register', {
             username: data.get('username'),
             email: data.get('email'),
             password: data.get('password'),
