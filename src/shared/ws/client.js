@@ -38,19 +38,21 @@ class Client {
 
     configureSocket() {
         this.socket.addEventListener('open', event => {
-            this.emit('connect');
             this.connected = true;
-
-            while (this.queue.length) {
-                this.socket.send(this.queue.shift());
-            }
+            this.emitter.emit('connection');
         });
 
         this.socket.addEventListener('message', event => {
             let info = JSON.parse(event.data);
-            if (info.type === 'connect') {
+
+            // On user authentication
+            if (info.type === 'user.authenticated') {
                 this.id = info.data;
-                this.emitter.emit('connect');
+
+                // Send all queued events
+                while (this.queue.length) {
+                    this.socket.send(this.queue.shift());
+                }
             }
 
             this.emitter.emit(info.type, info.data || null);
@@ -62,7 +64,8 @@ class Client {
 
         this.socket.addEventListener('close', event => {
             this.socket = null;
-            this.emitter.emit('close');
+            this.connected = false;
+            this.emitter.emit('disconnect');
         });
     }
 

@@ -46,6 +46,8 @@ class Client {
         this.id = uid;
         this.emitter = mitt();
         this.configureSocket();
+        this.token = null;
+        this.isAuthenticated = false;
     }
 
     configureSocket() {
@@ -61,16 +63,28 @@ class Client {
 
         this.socket.on('message', data => {
             const info = JSON.parse(data);
-            if (info.type === 'connect') {
-                this.emit(info.type, this.id);
+
+            // If user is not authenticated and is not requesting an authentication, close the connection
+            if (!this.isAuthenticated && !['user.authentication'].includes(info.type)) {
+                return this.emitUnauthorized();
             }
 
             this.emitter.emit(info.type, info.data);
         });
+
+        this.on('authentication.error', () => {
+            this.emitUnauthorized();
+        })
+    }
+
+    emitUnauthorized() {
+        this.emit('error', {code: 401, message: 'Unauthorized'});
+        this.socket.close();
+        return true;
     }
 
     emit(type, payload) {
-        this.socket.send(JSON.stringify({type, data: payload}));
+        this.socket.send(JSON.stringify({type, data: payload || null}));
     }
 
     isConnected() {
@@ -113,6 +127,11 @@ class WebSocketServer {
         this.wss.on('connection', socket => {
             let id = nanoId.nanoid();
             let client = new Client(socket, id);
+
+            client.on('authentication.error', () => {
+                this.clients.delete(id);
+                this.defaultRoom.removeClient(client);
+            });
 
             this.clients.set(id, client);
             this.defaultRoom.addClient(client);

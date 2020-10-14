@@ -22,10 +22,20 @@ export class WebSocketClient {
             this.socket.connect(this.baseUrl);
         }
 
-        this.socket.on('connect', (id) => {
+        this.socket.on('error', ({code, message}) => {
+            console.error('Error : ', code, message);
+        });
+
+        this.socket.on('close', () => console.log('Connection closed'));
+
+        this.socket.on('connection', () => {
+            this.user = store.getState().user;
+            this.authenticate();
+        });
+
+        this.socket.on('user.authenticated', (id) => {
             this.id = id;
-            let {user, rooms} = store.getState();
-            this.user = user;
+            let {rooms} = store.getState();
 
             // Subscribe to all client rooms
             rooms.forEach(room => {
@@ -38,6 +48,10 @@ export class WebSocketClient {
         });
     }
 
+    authenticate() {
+        this.socket.emit('user.authentication', this.user.token);
+    }
+
     isConnected() {
         return this.socket !== null;
     }
@@ -46,9 +60,7 @@ export class WebSocketClient {
         if (!this.isConnected()) return;
 
         let msg = this._buildMessage(message);
-        this.socket
-            .to(room)
-            .emit('new.message', msg);
+        this.socket.to(room).emit('new.message', msg);
 
         addMessage({room, message: msg});
     }

@@ -1,3 +1,5 @@
+const jwt = require('jsonwebtoken');
+const jwtConfig = require('../../server/settings').jwt;
 const Room = require('../../shared/ws/server').Room;
 
 class ChatManager {
@@ -12,13 +14,26 @@ class ChatManager {
      * @param {WebSocketServer} server
      */
     bootstrap(server) {
-        /** @param {Client} client */
+        /** @param {WebSocketServer.Client} client */
         server.on('connection', client => {
+            client.on('user.authentication', token => {
+                if (!jwt.verify(token, jwtConfig.secret, jwtConfig.options)) {
+                    client.isAuthenticated = false;
+                    client.token = null;
+                    client.emitter.emit('authentication.error');
+                    return;
+                }
+
+                client.token = token;
+                client.isAuthenticated = true;
+                client.emit('user.authenticated', client.id);
+            });
+
             client.on('room.subscribe', roomId => {
                 let room = this.rooms[roomId];
                 if (room) {
                     room.addClient(client);
-                    client.emit('subscribed');
+                    client.emit('room.subscribed');
                 }
             });
 
@@ -26,7 +41,7 @@ class ChatManager {
                 let room = this.rooms[roomId];
                 if (room) {
                     room.removeClient(client);
-                    client.emit('unsubscribed');
+                    client.emit('room.unsubscribed');
                 }
             });
 
