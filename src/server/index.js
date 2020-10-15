@@ -19,7 +19,9 @@ const app = express();
 
 // Middleware
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms'));
-app.use(helmet());
+app.use(helmet.hidePoweredBy());
+app.use(helmet.ieNoOpen());
+app.use(helmet.xssFilter());
 app.use(bodyParser.json());
 
 // Static files handlers

@@ -11,7 +11,9 @@ emitter.on('login.success', ({user}) => {
     getStorage().setItem('slackt.user', JSON.stringify(state));
 
     route('/dashboard');
-    emitter.emit('trigger.ws.connect');
+
+    // Trigger web sockets connection after 20s in order to wait for token active time
+    setTimeout(() => emitter.emit('trigger.ws.connect'), 20000);
 });
 
 export default emitter;

@@ -78,7 +78,6 @@ export default class RegisterForm extends Component {
             email: data.get('email'),
             password: data.get('password'),
         })
-            .then(res => res.json())
             .then(json => {
                 if (json.errors) {
                     this.setState({isSyncing: false, errors: json.errors});

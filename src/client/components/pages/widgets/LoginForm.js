@@ -65,7 +65,6 @@ export default class LoginForm extends Component {
             username: data.get('username'),
             password: data.get('password'),
         })
-            .then(res => res.json())
             .then(json => {
                 if (json.error) {
                     this.setState({isSyncing: false, error: json.error});
