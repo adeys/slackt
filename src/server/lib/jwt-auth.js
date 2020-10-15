@@ -7,7 +7,9 @@ const sendUnauthorizedResponse = (res) => {
     res.status(status.HTTP_UNAUTHORIZED)
         .json({
             code: status.HTTP_UNAUTHORIZED,
-            message: 'Unauthorized'
+            error: {
+                message: 'Unauthorized'
+            }
         });
 };
 
@@ -18,9 +20,12 @@ module.exports = (req, res, next) => {
 
     let token = req.headers['Authorization'].split(' ', 2)[1];
 
-    if (jwt.verify(token, jwtConfig.secret, jwtConfig.options)) {
-        return next();
-    }
+    try {
+        let payload = jwt.verify(token, jwtConfig.secret, jwtConfig.options);
+        req.user = {id: payload.jti, username: payload.username};
 
-    return sendUnauthorizedResponse(res);
+        next();
+    } catch (e) {
+        sendUnauthorizedResponse(res);
+    }
 };

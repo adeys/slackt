@@ -46,6 +46,8 @@ class AuthController {
                     username,
                     email,
                     password: security.hashPassword(password),
+                    channels: [],
+                    friends: [],
                     joinedAt: new Date()
                 });
         } catch (e) {
@@ -112,4 +114,4 @@ class AuthController {
     }
 }
 
-module.exports = new AuthController();
+module.exports = AuthController;

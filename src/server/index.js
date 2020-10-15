@@ -6,6 +6,7 @@ const bodyParser = require('body-parser');
 const WebSocketServer = require('../shared/ws/server');
 
 const authRouter = require('./routes/auth');
+const apiRouter = require('./routes/api');
 const renderIndex = require('./lib/renderer');
 const jwtAuth = require('./lib/jwt-auth');
 const ChatManager = require('./lib/chat');
@@ -27,7 +28,7 @@ app.use('/assets', express.static(path.resolve(__dirname, '../../public/build'),
 
 // Route handlers
 app.use('/auth', authRouter);
-app.use('/api/v1', jwtAuth);
+app.use('/api/v1', jwtAuth, apiRouter);
 app.use('*', renderIndex);
 
 const server = app.listen(3000, () => console.log('Server running on port 3000'));
