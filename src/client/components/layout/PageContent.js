@@ -4,6 +4,7 @@ import Match from "preact-router/match";
 import {connect} from 'unistore/preact';
 import ChatPage from '../pages/ChatPage';
 import {setActiveRoom} from '../../store/actions/room';
+import ChannelListPage from "../pages/ChannelListPage";
 
 
 const EmptyChat = () => (
@@ -30,6 +31,7 @@ const Content = ({currentRoom, setActiveRoom}) => {
                     <Router>
                         <EmptyChat path="/dashboard" />
                         <ChatPage path="/room/:id" />
+                        <ChannelListPage path="/explore/channels" />
                     </Router>
                 </div>
             </main>

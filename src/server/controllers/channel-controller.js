@@ -60,6 +60,57 @@ class ChannelController {
         res.json({status: code, data: formatter.formatRoom(doc, {lastReadMessage: 0, unreadMessages: 0})});
     }
 
+    addUser(req, res, next) {
+        let rooms = db.getCollection('rooms');
+        let count = rooms.count({_id: req.params.id, scope: 'public'});
+        if (count === 0) {
+            return next();
+        }
+
+        let channel = {};
+        let messageCount = db.getCollection('chats')
+            .findOne({roomId: req.params.id}).messages.length;
+
+        rooms.updateWhere(
+            room => room._id === req.params.id,
+            room => {
+                if (room.members.findIndex((member) => member.id === req.user.id) === -1) {
+                    room.members.push({...req.user, lastReadMessage: messageCount});
+                }
+
+                channel = room;
+                return room;
+            }
+        );
+
+        res.json({
+            status: statusCodes.HTTP_OK,
+            data: formatter.formatRoom(channel, {
+                lastReadMessage: messageCount,
+                unreadMessages: 0
+            })
+        });
+    }
+
+    removeUser(req, res, next) {
+        let rooms = db.getCollection('rooms');
+        let count = rooms.count({_id: req.params.id, scope: 'public'});
+        if (count === 0) {
+            return next();
+        }
+
+        rooms.updateWhere(
+            room => room._id === req.params.id,
+            room => {
+                room.members = room.members.filter((member) => member.id !== req.user.id);
+
+                return room;
+            }
+        );
+
+        res.json({status: statusCodes.HTTP_NO_CONTENT, data: {}});
+    }
+
     /**
      * @param channel
      * @returns {
@@ -77,7 +128,7 @@ class ChannelController {
             created_by: channel.author,
             date_created: channel.createdAt,
             members_count: channel.members.length,
-            messages_count: this.chatCollection.count({roomId: channel._id})
+            // messages_count: this.chatCollection.count({roomId: channel._id})
         }
     }
 }

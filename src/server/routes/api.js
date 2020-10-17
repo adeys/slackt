@@ -11,6 +11,9 @@ router.route('/channels')
     .get(channelController.list)
     .post(channelController.create);
 
+router.get('/channels/:id/join', channelController.addUser);
+router.get('/channels/:id/leave', channelController.removeUser);
+
 // Rooms related routes
 let roomController = new RoomController();
 router.get('/rooms', roomController.list);

@@ -1,8 +1,8 @@
 import {Component, Fragment, h} from 'preact';
-import {Link} from "preact-router/match";
 import {Modal, ModalBody} from "reactstrap";
 import {connect} from 'unistore/preact';
 import Form from "../../../elements/Form";
+import Link from "../../../elements/Link";
 import {createChannel} from "../../../../store/actions/channel";
 
 class Section extends Component {
@@ -81,7 +81,6 @@ class Section extends Component {
                 <div className="sb-sidenav-menu-content">
                     {data.map(item => (
                         <Link
-                            activeClassName="active"
                             href={`/room/${item.id}`}
                             className="sb-sidenav-menu-item">
                             {isChannel ? '#' : '@'} {item.name}

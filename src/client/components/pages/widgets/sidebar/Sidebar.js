@@ -4,6 +4,7 @@ import {connect} from 'unistore/preact';
 import store from "../../../../store";
 import {fetchRooms} from "../../../../store/actions/room";
 import Section from "./Section";
+import Link from "../../../elements/Link";
 
 const Sidebar = ({rooms, fetchRooms}) => {
     useEffect(() => {
@@ -23,12 +24,26 @@ const Sidebar = ({rooms, fetchRooms}) => {
                             data={channels}
                             isChannel={true} />
                         {chats.length !== 0
-                            ? (<Section
+                            ? (
+                                <Section
                                 section={{title: 'Chats', count: chats.length}}
                                 data={chats}
-                                isChannel={false} />)
+                                isChannel={false} />
+                            )
                             : null
                         }
+                        <div className="sb-sidenav-menu-heading">
+                            <div className="sb-nav-menu-icon"><i className="feather icon-shuffle"/></div>
+                            Explore
+                        </div>
+                        <div className="sb-sidenav-menu-content">
+                            <Link href={`/explore/channels`} className="sb-sidenav-menu-item">
+                                Channels
+                            </Link>
+                            <Link href={`/explore/users`} className="sb-sidenav-menu-item">
+                                Users
+                            </Link>
+                        </div>
                     </div>
                 </div>
                 <div className="sb-sidenav-footer">

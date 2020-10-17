@@ -69,6 +69,10 @@ export class WebSocketClient {
         this.socket.emit('room.subscribe', room);
     }
 
+    unsubscribe(room) {
+        this.socket.emit('room.unsubscribe', room);
+    }
+
     _buildMessage(message) {
         let author = {username: this.user.username, avatar: this.user.avatar};
         return  {from: author, content: message};

@@ -82,3 +82,24 @@
   border-top-right-radius: unset;
   border-bottom-right-radius: unset;
 }
+
+.search-result {
+  height: calc(100vh - 225px);
+  margin-top: .75rem;
+  background-color: $light;
+  padding: .50rem;
+
+  & .scrollbar {
+    padding: .50rem;
+
+    & .result-item {
+      display: flex;
+      flex-wrap: wrap;
+      flex-direction: row;
+      border: 1px solid $gray-500;
+      border-radius: .25rem;
+      margin-bottom: .75rem;
+      padding: .50rem;
+    }
+  }
+}
