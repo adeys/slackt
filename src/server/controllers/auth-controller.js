@@ -46,8 +46,7 @@ class AuthController {
                     username,
                     email,
                     password: security.hashPassword(password),
-                    channels: [],
-                    friends: [],
+                    rooms: [],
                     joinedAt: new Date()
                 });
         } catch (e) {

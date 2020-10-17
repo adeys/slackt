@@ -7,13 +7,20 @@ const headers = {
 function request(url, options) {
     let {auth, user} = store.getState();
     if (auth.isLoggedIn) {
-        options.headers['Authorization'] = 'Bearer ' + user.token;
+        options.headers['Authorization'] = `Bearer ${user.token}`;
     }
 
     return new Promise(((resolve, reject) => {
         let promise = fetch(url, options)
             .then(res => res.json())
-            .then(json => resolve(json));
+            .then(json => {
+                if (json.error && json.error.code === 401) {
+                    store.setState({auth: {isLoggedIn: false}});
+                    return;
+                }
+
+                resolve(json);
+            });
 
         if (reject) {
             promise.catch(reject);

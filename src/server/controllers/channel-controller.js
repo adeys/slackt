@@ -2,12 +2,12 @@ const db = require('../lib/database');
 
 class ChannelController {
     constructor() {
-
+        this.list = this.list.bind(this);
     }
 
     list(req, res) {
         let rooms = db.getCollection('rooms')
-            .find({type: 'channel'});
+            .find({scope: 'public'});
 
         res.json(rooms.map(this._formatChannelData));
     }
@@ -24,7 +24,7 @@ class ChannelController {
         return {
             id: channel._id,
             name: channel.name,
-            type: 'channel',
+            scope: 'public',
             summary: channel.summary,
             created_by: {id: channel.author.id, username: channel.author.username},
             date_created: channel.createdAt,

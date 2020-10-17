@@ -14,11 +14,11 @@ const sendUnauthorizedResponse = (res) => {
 };
 
 module.exports = (req, res, next) => {
-    if (!req.headers['Authorization']) {
+    if (!req.headers['authorization']) {
         return sendUnauthorizedResponse(res);
     }
 
-    let token = req.headers['Authorization'].split(' ', 2)[1];
+    let token = req.headers['authorization'].split(' ', 2)[1];
 
     try {
         let payload = jwt.verify(token, jwtConfig.secret, jwtConfig.options);

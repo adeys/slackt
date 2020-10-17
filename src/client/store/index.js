@@ -3,8 +3,8 @@ import createStore from 'unistore';
 let initialState = {
     auth: { isLoggedIn: false },
     user: {},
-    currentRoom: 'default',
-    rooms: ['default'],
+    currentRoom: null,
+    rooms: [],
     messages: {},
 };
 

@@ -1,27 +1,38 @@
 import {h} from 'preact';
-import {Link} from 'preact-router/match';
+import {useEffect} from "preact/hooks";
+import {connect} from 'unistore/preact';
 import store from "../../../../store";
+import request from "../../../../utils/request";
+import {setRooms} from "../../../../store/actions/room";
+import Section from "./Section";
 
-export default () => {
+const Sidebar = ({rooms, setRooms}) => {
+    useEffect(() => {
+        request.get('/api/v1/rooms')
+            .then(res => {
+                setRooms(res);
+            });
+    }, []);
+
+    let channels = rooms.filter(room => room.scope === 'public');
+    let chats = rooms.filter(room => room.scope === 'private');
+
     return (
         <div className="sb-nav">
             <nav className="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
                 <div className="sb-sidenav-menu">
                     <div className="nav">
-                        <div className="sb-sidenav-menu-heading">
-                            <div className="sb-nav-menu-icon"><i className="feather icon-shuffle"/></div>
-                            Channels (2)
-                            <div className="sb-nav-menu-icon nav-action" onClick={() => alert('Clicked')}>
-                                <i className="feather font-weight-bold icon-plus"/>
-                            </div>
-                        </div>
-                        <div className="sb-sidenav-menu-content">
-                            <Link activeClassName="active" href="/dashboard" className="sb-sidenav-menu-item">
-                                # React
-                                <div className="badge badge-success ml-auto text-center">2</div>
-                            </Link>
-                        </div>
-
+                        <Section
+                            section={{title: 'Channels', count: channels.length}}
+                            data={channels}
+                            isChannel={true} />
+                        {chats.length !== 0
+                            ? (<Section
+                                section={{title: 'Chats', count: chats.length}}
+                                data={chats}
+                                isChannel={false} />)
+                            : null
+                        }
                     </div>
                 </div>
                 <div className="sb-sidenav-footer">
@@ -32,3 +43,5 @@ export default () => {
         </div>
     );
 };
+
+export default connect((state) => ({rooms: state.rooms}), {setRooms})(Sidebar);
