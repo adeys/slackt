@@ -14,9 +14,16 @@ function request(url, options) {
         let promise = fetch(url, options)
             .then(res => res.json())
             .then(json => {
-                if (json.error && json.error.code === 401) {
-                    store.setState({auth: {isLoggedIn: false}});
-                    return;
+                if (json.error) {
+                    if (json.error.code === 401) {
+                        store.setState({auth: {isLoggedIn: false}});
+                        return;
+                    }
+
+                    if (reject) {
+                        reject(json.error);
+                        return;
+                    }
                 }
 
                 resolve(json);

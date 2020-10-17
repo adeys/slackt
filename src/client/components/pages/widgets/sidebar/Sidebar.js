@@ -2,16 +2,12 @@ import {h} from 'preact';
 import {useEffect} from "preact/hooks";
 import {connect} from 'unistore/preact';
 import store from "../../../../store";
-import request from "../../../../utils/request";
-import {setRooms} from "../../../../store/actions/room";
+import {fetchRooms} from "../../../../store/actions/room";
 import Section from "./Section";
 
-const Sidebar = ({rooms, setRooms}) => {
+const Sidebar = ({rooms, fetchRooms}) => {
     useEffect(() => {
-        request.get('/api/v1/rooms')
-            .then(res => {
-                setRooms(res);
-            });
+        fetchRooms();
     }, []);
 
     let channels = rooms.filter(room => room.scope === 'public');
@@ -44,4 +40,4 @@ const Sidebar = ({rooms, setRooms}) => {
     );
 };
 
-export default connect((state) => ({rooms: state.rooms}), {setRooms})(Sidebar);
+export default connect((state) => ({rooms: state.rooms}), {fetchRooms})(Sidebar);

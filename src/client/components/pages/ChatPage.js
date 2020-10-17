@@ -1,9 +1,17 @@
 import {h} from 'preact';
-
+import {connect} from 'unistore/preact';
 import {MessageList, ChatInput} from './chat';
 
 
-export default () => {
+const ChatPage = ({channel, messages}) => {
+    if (!channel) {
+        return (
+            <div className="d-flex h-100 justify-content-center text-center align-items-center">
+                Let's chat
+            </div>
+        );
+    }
+
     return (
         <div className="d-flex flex-column h-100">
             <div className="my-3 d-flex flex-column flex-sm-row h-100">
@@ -34,7 +42,7 @@ export default () => {
                         </div>
                     </div>
                     {/* Messages List */}
-                    <MessageList />
+                    <MessageList messages={messages} />
 
                     {/* Message Input */}
                     <div className="mt-3 p-2 col-12 bg-light">
@@ -73,3 +81,8 @@ export default () => {
         </div>
     )
 };
+
+export default connect(state => ({
+    channel: state.currentRoom,
+    messages: state.currentRoom ? state.messages[state.currentRoom] : []
+}))(ChatPage);

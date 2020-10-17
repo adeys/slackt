@@ -13,6 +13,7 @@
     "jsonwebtoken": "^8.5.1",
     "lokijs": "^1.5.11",
     "mitt": "^2.1.0",
+    "module-alias": "^2.2.2",
     "morgan": "^1.10.0",
     "nanoid": "^3.1.12",
     "preact": "^10.5.4",

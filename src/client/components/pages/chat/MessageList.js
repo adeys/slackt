@@ -31,6 +31,5 @@ const List = ({messages, user}) => {
 };
 
 export default connect((state) => ({
-    messages: state.messages[state.currentRoom],
     user: state.user.username})
 )(List);

@@ -1,4 +1,5 @@
 const db = require('../lib/database');
+const formatter = require('../helpers/formatter');
 
 class RoomController {
     constructor() {
@@ -6,32 +7,18 @@ class RoomController {
     }
 
     list(req, res) {
-        let user = db.getCollection('users').findOne({_id: req.user.id});
-        let rooms = db.getCollection('rooms').find({_id: {$in: user.rooms.map(room => room.id)}});
+        let rooms = db.getCollection('rooms').where(room => {
+            return room.members.findIndex(member => member.id === req.user.id) !== -1;
+        });
 
-        res.json(rooms.map(room => this._formatData(room, rooms.find(item => item.id === room._id))));
-    }
+        let chatsCollection = db.getCollection('chats');
+        res.json(rooms.map(room => {
+            let tmp = room.members.find(user => user.id === req.user.id);
 
-    _formatData(room, userRoom) {
-        let data = {
-            id: room._id,
-            scope: room.scope,
-            name: room.name,
-            attributes: {},
-            last_read_message: 0,
-            unread_messages: 0,
-            date_created: room.createdAt
-        };
-
-        if (room.scope === 'public') {
-            data.attributes = {
-                summary: room.summary,
-                created_by: room.author,
-                members_count: room.members.length
-            };
-        }
-
-        return data;
+            return formatter.formatRoom(room, {
+                lastReadMessage: tmp.lastReadMessage,
+                unreadMessages: chatsCollection.findOne({roomId: room._id}).messages.length - tmp.lastReadMessage});
+        }));
     }
 }
 

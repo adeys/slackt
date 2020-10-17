@@ -1,9 +1,6 @@
-import store from "../index";
+import request from "../../utils/request";
 
-export function setRooms(_, rooms) {
-    store.setState({rooms});
-}
-
-export function addRoom(state, room) {
-    store.setState({rooms: [...state.rooms, room]});
+export async function fetchRooms(_) {
+    let rooms = await request.get('/api/v1/rooms');
+    return {rooms};
 }

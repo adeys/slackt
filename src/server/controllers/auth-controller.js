@@ -46,7 +46,6 @@ class AuthController {
                     username,
                     email,
                     password: security.hashPassword(password),
-                    rooms: [],
                     joinedAt: new Date()
                 });
         } catch (e) {

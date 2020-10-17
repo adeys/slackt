@@ -1,3 +1,9 @@
+const moduleAlias = require('module-alias');
+moduleAlias.addAliases({
+   'react': 'preact/compat',
+   'react-dom': 'preact/compat'
+});
+
 const path = require('path');
 const express = require('express');
 const helmet = require('helmet');
