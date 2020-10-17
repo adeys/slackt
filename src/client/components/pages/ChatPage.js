@@ -2,15 +2,8 @@ import {h} from 'preact';
 import {connect} from 'unistore/preact';
 import {MessageList, ChatInput} from './chat';
 
-
-const ChatPage = ({channel, messages}) => {
-    if (!channel) {
-        return (
-            <div className="d-flex h-100 justify-content-center text-center align-items-center">
-                Let's chat
-            </div>
-        );
-    }
+const ChatPage = ({channel, rooms, messages}) => {
+    channel = rooms.find(room => room.id === channel) || {attributes: {}};
 
     return (
         <div className="d-flex flex-column h-100">
@@ -21,8 +14,8 @@ const ChatPage = ({channel, messages}) => {
                     <div className="card">
                         <div className="card-header d-flex flex-column flex-sm-row py-2 px-3">
                             <div>
-                                <h4 className="card-title font-weight-bold mb-1">#React</h4>
-                                <div className="text-muted card-subtitle">3 users</div>
+                                <h4 className="card-title font-weight-bold mb-1">#{channel.name}</h4>
+                                <div className="text-muted card-subtitle">{channel.attributes.members_count} users</div>
                             </div>
                             <div className="form-inline mt-1 ml-sm-auto mt-sm-0">
                                 <div className="input-group">
@@ -53,7 +46,7 @@ const ChatPage = ({channel, messages}) => {
                 <div className="col-12 col-sm-3 d-none d-sm-block">
                     <div className="card">
                         <div className="card-header">
-                            About React
+                            About {channel.name}
                         </div>
                         <ul className="list-group list-group-flush">
                             <li className="list-group-item">
@@ -84,5 +77,6 @@ const ChatPage = ({channel, messages}) => {
 
 export default connect(state => ({
     channel: state.currentRoom,
+    rooms: state.rooms,
     messages: state.currentRoom ? state.messages[state.currentRoom] : []
 }))(ChatPage);

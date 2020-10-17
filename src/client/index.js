@@ -3,7 +3,7 @@ import {h, hydrate} from 'preact';
 import {Provider} from 'unistore/preact';
 
 import AppRoot from './App';
-import WebSocketProvider from './components/context/ws-context';
+import WebSocketProvider from './context/ws-context';
 import client from './ws'; // Ensure correct events listening trigger
 import store from './store/initStore';
 

@@ -1,4 +1,4 @@
-import { h } from 'preact';
+import {h} from 'preact';
 import Router, {route} from 'preact-router';
 
 import AuthPage from './components/pages/AuthPage';
@@ -29,7 +29,7 @@ const App = ({url}) => {
         <Router url={url} onChange={onRouteChange}>
             <Redirect path="/" to="/dashboard" />
             <AuthPage path="/login" />
-            <DashboardLayout path="/dashboard" />
+            <DashboardLayout default />
         </Router>
     );
 };

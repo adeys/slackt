@@ -3,7 +3,7 @@ import {Provider} from 'unistore/preact';
 
 import App from './App';
 import store from './store';
-import WebSocketProvider from "./components/context/ws-context";
+import WebSocketProvider from "./context/ws-context";
 import {WebSocketClient} from "./service/ws/client.service";
 
 export default ({url}) => (

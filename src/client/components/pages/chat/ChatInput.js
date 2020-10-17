@@ -1,7 +1,8 @@
 import {h} from 'preact';
-import {useContext, useState} from "preact/hooks";
+import {useState} from "preact/hooks";
 
-import {WebSocketContext} from "../../context/ws-context";
+import {useWsClient} from "../../../hooks";
+import store from "../../../store";
 
 const onSubmit = (e, input, wsClient) => {
     e.preventDefault();
@@ -12,12 +13,12 @@ const onSubmit = (e, input, wsClient) => {
         return;
     }
 
-    wsClient.sendTo('default', input);
+    wsClient.sendTo(store.getState().currentRoom, input);
 };
 
 export default () => {
     const [msg, setMsg] = useState('');
-    const client = useContext(WebSocketContext);
+    const client = useWsClient();
 
     return (
         <form method="POST" onSubmit={event => onSubmit(event, msg, client)}>

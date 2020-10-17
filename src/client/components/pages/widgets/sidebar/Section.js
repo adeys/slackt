@@ -80,7 +80,10 @@ class Section extends Component {
                 </div>
                 <div className="sb-sidenav-menu-content">
                     {data.map(item => (
-                        <Link activeClassName="active" href={`/room/${item.id}`} className="sb-sidenav-menu-item">
+                        <Link
+                            activeClassName="active"
+                            href={`/room/${item.id}`}
+                            className="sb-sidenav-menu-item">
                             {isChannel ? '#' : '@'} {item.name}
                             {item.unread_messages === 0
                                 ? null
@@ -108,9 +111,10 @@ class Section extends Component {
         }
 
         this.props.createChannel({name: data.get('name'), about: data.get('about') || ''})
-            .then(() => this.setState({openedModal: false, isLoading: false}))
+            .then(() => this.setState({openedModal: false, isLoading: false, errors: {}}))
             .catch(err => {
-                this.setState({isLoading: false, errors: err.data});
+                console.log(err);
+                this.setState({isLoading: false, errors: err.data || {}});
             });
     }
 }
