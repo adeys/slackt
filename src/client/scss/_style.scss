@@ -60,20 +60,38 @@
       width: 42px;
       margin-right: .30rem;
       padding-top: .25rem;
+      border-radius: .15rem;
     }
 
     & .chat-message {
       padding-left: .5rem;
       padding-right: .5rem;
       height: auto;
+      font-size: .90rem;
 
       &.sent {
         border-left: 1.75px solid $warning;
       }
 
       & > .msg-author {
-        margin-bottom: .25rem;
+        margin-bottom: .15rem;
       }
+    }
+  }
+
+  & .chat-event {
+    display: flex;
+    justify-content: center;
+
+    & .chat-event-content {
+      width: fit-content;
+      text-align: center;
+      font-size: .75rem;
+      margin: .50rem;
+      padding: .25rem 1rem;
+      border: 1px solid $gray-400;
+      border-radius: .30rem;
+      background-color: $gray-300;
     }
   }
 }

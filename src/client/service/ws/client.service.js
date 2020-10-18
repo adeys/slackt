@@ -43,16 +43,22 @@ export class WebSocketClient {
             })
         });
 
-        this.socket.on('room.user.joined', (data) => {
-            console.log('A new user joined :', data);
+        this.socket.on('room.user.joined', ({room, data}) => {
+            store.action(addMessage)({room, message: {
+                content: `${data.user.username} joined`,
+                type: 'event'
+            }});
         });
 
-        this.socket.on('room.user.left', (data) => {
-            console.log('An user left :', data);
+        this.socket.on('room.user.left', ({room, data}) => {
+            store.action(addMessage)({room, message: {
+                content: `${data.user.username} left`,
+                type: 'event'
+            }});
         });
 
         this.socket.on('new.message', ({room, data}) => {
-            store.action(addMessage)({room, message: data});
+            store.action(addMessage)({room, message: {...data, type: 'message'}});
         });
     }
 
@@ -70,7 +76,7 @@ export class WebSocketClient {
         let msg = this._buildMessage(message);
         this.socket.to(room).emit('new.message', msg);
 
-        store.action(addMessage)({room, message: msg});
+        store.action(addMessage)({room, message: {...msg, type: 'message'}});
     }
 
     subscribe(room) {
