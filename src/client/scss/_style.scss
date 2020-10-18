@@ -96,6 +96,46 @@
   }
 }
 
+.typing-indicator {
+  width: fit-content;
+  background-color: $gray-300;
+  padding: .05rem .35rem;
+  border-radius: .75rem;
+
+  & .typing-dot {
+    height: .5rem;
+    width: .5rem;
+    border-radius: 100%;
+    margin-left: .35rem;
+    display: inline-block;
+    background-color: #5C5E69;
+    animation: 1.2s typing-dot ease-in-out infinite;
+
+    &:first-of-type {
+      margin-left: unset;
+    }
+
+    &:nth-of-type(2) {
+      animation-delay: 0.15s;
+    }
+
+    &:nth-of-type(3) {
+      animation-delay: 0.25s;
+    }
+  }
+
+  @keyframes typing-dot {
+    15% {
+      transform: translateY(-35%);
+      opacity: 0.5;
+    }
+    30% {
+      transform: translateY(0%);
+      opacity: 1;
+    }
+  }
+}
+
 .input-group-text {
   border-top-right-radius: unset;
   border-bottom-right-radius: unset;

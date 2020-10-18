@@ -10,7 +10,20 @@ const ChatEvent = ({content}) => (
     </div>
 );
 
-const MessageList = ({messages, user}) => {
+const TypingIndicator = ({user}) => (
+    <div className="mx-2 d-inline-flex">
+        <div className="font-weight-bold small font-italic mr-2 align-self-center">
+            {user} is typing
+        </div>
+        <div className="typing-indicator">
+            <span className="typing-dot"/>
+            <span className="typing-dot"/>
+            <span className="typing-dot"/>
+        </div>
+    </div>
+);
+
+const MessageList = ({messages, user, typings}) => {
     let ref = createRef();
 
     useEffect(() => {
@@ -31,6 +44,7 @@ const MessageList = ({messages, user}) => {
                         content={msg.content}
                         isSent={user === msg.from.username} />
                 )}
+                {(typings || []).map(({username}) => (<TypingIndicator user={username} />))}
             </div>
         </div>
     );
@@ -38,4 +52,5 @@ const MessageList = ({messages, user}) => {
 
 export default connect((state) => ({
     user: state.user.username,
+    typings: state.typingUsers[state.currentRoom]
 }), {})(MessageList);

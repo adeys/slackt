@@ -6,6 +6,7 @@ let initialState = {
     currentRoom: null,
     rooms: [],
     messages: {},
+    typingUsers: {}
 };
 
 const store = createStore(initialState);

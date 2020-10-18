@@ -56,6 +56,12 @@ class ChatManager {
             client.on('room.broadcast', ({room, event}) => {
                 this.broadcastTo(room, client, event.type, event.payload);
             });
+
+            ['typing.started', 'typing.ended'].forEach(action => {
+                client.on(action, ({room, user}) => {
+                    this.broadcastTo(room, client, `user.${action}`, {user});
+                });
+            })
         });
 
         this.server = server;

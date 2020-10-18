@@ -2,6 +2,7 @@ import emitter from '../../utils/emitter';
 import io from "../../../shared/ws/client";
 import store from "../../store";
 import {addMessage} from '../../store/actions/message';
+import {addTypingUser, removeTypingUser} from "../../store/actions/room";
 
 export class WebSocketClient {
     constructor(baseUrl) {
@@ -57,6 +58,14 @@ export class WebSocketClient {
             }});
         });
 
+        this.socket.on('user.typing.started', ({room, data}) => {
+            store.action(addTypingUser)(room, data.user);
+        });
+
+        this.socket.on('user.typing.ended', ({room, data}) => {
+            store.action(removeTypingUser)(room, data.user);
+        });
+
         this.socket.on('new.message', ({room, data}) => {
             store.action(addMessage)({room, message: {...data, type: 'message'}});
         });
@@ -85,6 +94,11 @@ export class WebSocketClient {
 
     unsubscribe(room) {
         this.socket.emit('room.unsubscribe', room);
+    }
+
+    isTypingIn(room, status) {
+        let action = `typing.${!!status ? 'started' : 'ended'}`;
+        this.socket.emit(action, {room, user: {username: this.user.username, avatar: this.user.avatar}});
     }
 
     _buildMessage(message) {
