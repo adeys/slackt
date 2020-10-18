@@ -10,7 +10,7 @@ const ChatEvent = ({content}) => (
     </div>
 );
 
-const List = ({messages, user}) => {
+const MessageList = ({messages, user}) => {
     let ref = createRef();
 
     useEffect(() => {
@@ -37,5 +37,5 @@ const List = ({messages, user}) => {
 };
 
 export default connect((state) => ({
-    user: state.user.username})
-)(List);
+    user: state.user.username,
+}), {})(MessageList);

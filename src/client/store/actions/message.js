@@ -6,5 +6,25 @@ export function addMessage(state, payload) {
     }
 
     messages[room] = [...messages[room], message];
-    return {messages};
+    let update =  {messages};
+
+    if (state.currentRoom !== room) {
+        let rooms = [...state.rooms];
+        rooms.find(item => item.id === room).unread_messages++;
+        update.rooms = rooms;
+    }
+
+    return update;
+}
+
+export function markAsRead(state, roomId) {
+    let rooms = [...state.rooms];
+    let idx = rooms.findIndex(item => item.id === roomId);
+
+    if (idx !== -1 ) {
+        rooms[idx].unread_messages = 0;
+        return {rooms};
+    }
+
+    return {};
 }

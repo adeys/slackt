@@ -18,12 +18,17 @@ const Content = ({currentRoom, setActiveRoom}) => {
         <div className="content bg-gray">
             <main className="page-content">
                 <div className="container-fluid flex-fill">
-                    <Match path="/room/:id">
-                        {({matches, ...props}) => {
+                    <Match>
+                        {(props) => {
+                            let matches = Router.exec(props.url, '/room/:id', {});
                             if (matches) {
-                                let id = Router.exec(props.url, '/room/:id', {}).id;
+                                let id = matches.id;
                                 if (currentRoom !== id) {
                                     setActiveRoom(id);
+                                }
+                            } else {
+                                if (currentRoom !== null) {
+                                    setActiveRoom(null);
                                 }
                             }
                         }}

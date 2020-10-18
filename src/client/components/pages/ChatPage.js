@@ -1,10 +1,15 @@
 import {h} from 'preact';
 import {connect} from 'unistore/preact';
 import {MessageList, ChatInput} from './chat';
+import {useEffect} from "preact/hooks";
+import {markAsRead} from "../../store/actions/message";
 
-const ChatPage = ({channel, rooms, messages}) => {
-    channel = rooms.find(room => room.id === channel) || {attributes: {}};
+const ChatPage = ({channel, rooms, messages, markAsRead}) => {
+    useEffect(() => {
+        markAsRead(channel.id);
+    }, [channel, rooms.length]); // Run only when the channel or the rooms length changes
 
+    channel = rooms.find(room => room.id === channel) || {id: null, attributes: {}};
     return (
         <div className="d-flex flex-column h-100">
             <div className="my-3 d-flex flex-column flex-sm-row h-100">
@@ -79,4 +84,4 @@ export default connect(state => ({
     channel: state.currentRoom,
     rooms: state.rooms,
     messages: state.currentRoom ? state.messages[state.currentRoom] : []
-}))(ChatPage);
+}), {markAsRead})(ChatPage);
