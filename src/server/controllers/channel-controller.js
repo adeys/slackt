@@ -4,6 +4,7 @@ const db = require('../lib/database');
 const statusCodes = require('../helpers/http-statuses');
 const formatter = require('../helpers/formatter');
 const validatorHelper = require('../helpers/validator');
+const chatManager = require('../lib/chat');
 
 class ChannelController {
     constructor() {
@@ -55,6 +56,8 @@ class ChannelController {
         db.getCollection('chats')
             .insertOne({_id: nanoId.nanoid(), roomId: doc._id, messages: []});
 
+        chatManager.addRoom({id: doc._id});
+
         let code = statusCodes.HTTP_CREATED;
         res.status(code);
         res.json({status: code, data: formatter.formatRoom(doc, {lastReadMessage: 0, unreadMessages: 0})});
@@ -90,6 +93,8 @@ class ChannelController {
                 unreadMessages: 0
             })
         });
+
+        chatManager.notifyRoom('user.joined', req.params.id, req.user);
     }
 
     removeUser(req, res, next) {
@@ -109,6 +114,8 @@ class ChannelController {
         );
 
         res.json({status: statusCodes.HTTP_NO_CONTENT, data: {}});
+
+        chatManager.notifyRoom('user.left', req.params.id, req.user);
     }
 
     /**

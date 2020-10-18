@@ -15,7 +15,7 @@ const authRouter = require('./routes/auth');
 const apiRouter = require('./routes/api');
 const renderIndex = require('./lib/renderer');
 const jwtAuth = require('./lib/jwt-auth');
-const ChatManager = require('./lib/chat');
+const chatManager = require('./lib/chat');
 
 const STATIC_OPTIONS = {
    maxAge: 31536000000 // One year
@@ -45,7 +45,6 @@ const server = app.listen(3000, () => console.log('Server running on port 3000')
 const wss = new WebSocketServer(server);
 
 // Bootstrap chat manager
-const manager = new ChatManager();
-manager.bootstrap(wss);
+chatManager.bootstrap(wss);
 
 wss.listen(() => console.log('Web Socket server started'));

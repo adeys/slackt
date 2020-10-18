@@ -46,7 +46,7 @@ class Client {
         this.id = uid;
         this.emitter = mitt();
         this.configureSocket();
-        this.token = null;
+        this.user = null;
         this.isAuthenticated = false;
     }
 

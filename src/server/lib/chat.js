@@ -1,13 +1,20 @@
 const jwt = require('jsonwebtoken');
 const jwtConfig = require('../../server/settings').jwt;
 const Room = require('../../shared/ws/server').Room;
+const db = require('./database');
 
 class ChatManager {
     constructor() {
         this.server = null;
+        this.userSockets = {};
         this.rooms = {
             default: new Room('default')
         };
+
+        db.on('loaded', () => {
+            db.getCollection('rooms')
+                .find().forEach(room => this.addRoom({id: room._id}));
+        });
     }
 
     /**
@@ -17,16 +24,17 @@ class ChatManager {
         /** @param {WebSocketServer.Client} client */
         server.on('connection', client => {
             client.on('user.authentication', token => {
-                if (!jwt.verify(token, jwtConfig.secret, jwtConfig.options)) {
+                try {
+                    let payload = jwt.verify(token, jwtConfig.secret, jwtConfig.options);
+                    client.user = {id: payload.jti, username: payload.username};
+                    client.isAuthenticated = true;
+                    this.userSockets[payload.jti] = client.id;
+                    client.emit('user.authenticated', client.id);
+                } catch (e) {
                     client.isAuthenticated = false;
-                    client.token = null;
+                    client.user = null;
                     client.emitter.emit('authentication.error');
-                    return;
                 }
-
-                client.token = token;
-                client.isAuthenticated = true;
-                client.emit('user.authenticated', client.id);
             });
 
             client.on('room.subscribe', roomId => {
@@ -59,6 +67,20 @@ class ChatManager {
 
         room.broadcastFrom(from, event, data);
     }
+
+    notifyRoom(event, room, payload) {
+        this.broadcastTo(
+            room,
+            this.server.clients.get(this.userSockets[payload.id]),
+            `room.${event}`,
+            {user: payload}
+        );
+    }
+
+    addRoom(room) {
+        this.rooms[room.id] = new Room(room.id);
+    }
 }
 
-module.exports = ChatManager;
+exports.ChatManager = ChatManager;
+module.exports = new ChatManager();
